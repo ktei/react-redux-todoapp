@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchTodos, updateNewItem, saveNewItem } from 'actions/todos';
+import { fetchTodos, updateNewItem, saveNewItem, fetchRemoteTodos } from 'actions/todos';
 
 function TodoItem({ item: { title } }) {
   return (
@@ -21,6 +21,7 @@ class App extends React.PureComponent {
 
     this.handleNewItemTitleChange = this.handleNewItemTitleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleFetchTodosClick = this.handleFetchTodosClick.bind(this);
   }
 
   componentDidMount() {
@@ -36,6 +37,10 @@ class App extends React.PureComponent {
 
     this.props.saveNewItem({ title: this.state.newItemTitle });
     this.setState({ newItemTitle: '' });
+  }
+
+  handleFetchTodosClick() {
+    this.props.fetchRemoteTodos();
   }
 
   render() {
@@ -59,7 +64,14 @@ class App extends React.PureComponent {
                 />
               </div>
             </form>
-            <div className="list-group">
+            <button
+              className="btn btn-primary"
+              disabled={this.props.isFetchingRemoteTodos}
+              onClick={this.handleFetchTodosClick}
+            >
+              {this.props.isFetchingRemoteTodos ? 'Fetch...' : 'Fetch'}
+            </button>
+            <div className="list-group" style={{ marginTop: 10 }}>
               {this.props.items.map(item => <TodoItem key={item.id} item={item} />)}
             </div>
           </div>
@@ -73,6 +85,7 @@ const mapStateToProps = (state) => {
   return {
     items: state.todos.items,
     newItem: state.todos.newItem,
+    isFetchingRemoteTodos: state.todos.isFetchingRemoteTodos,
   };
 };
 
@@ -81,6 +94,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchTodos: () => dispatch(fetchTodos()),
     updateNewItem: payload => dispatch(updateNewItem(payload)),
     saveNewItem: payload => dispatch(saveNewItem(payload)),
+    fetchRemoteTodos: () => dispatch(fetchRemoteTodos()),
   };
 };
 

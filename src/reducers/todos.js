@@ -1,4 +1,4 @@
-import { FETCH_TODOS, UPDATE_NEW_ITEM, SAVE_NEW_ITEM } from 'actions/todos';
+import { FETCH_TODOS, UPDATE_NEW_ITEM, SAVE_NEW_ITEM, FETCH_REMOTE_TODOS_REQUEST, FETCH_REMOTE_TODOS_SUCCESS } from 'actions/todos';
 
 const initialState = {
   newItem: '',
@@ -35,6 +35,19 @@ export default function todos(state = initialState, action) {
       return {
         ...state,
         items: [action.payload].concat(state.items),
+      };
+
+    case FETCH_REMOTE_TODOS_REQUEST:
+      return {
+        ...state,
+        isFetchingRemoteTodos: true,
+      };
+
+    case FETCH_REMOTE_TODOS_SUCCESS:
+      return {
+        ...state,
+        items: action.payload,
+        isFetchingRemoteTodos: false,
       };
 
     default:
