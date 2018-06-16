@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --history-api-fallback --hot --inline --progress --colors --port 8000",
+    "start": "webpack-dev-server --history-api-fallback --hot --inline --progress --colors --port 8800",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "ktei2008@gmail.com",
